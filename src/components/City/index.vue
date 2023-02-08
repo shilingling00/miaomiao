@@ -4,87 +4,83 @@
 					<div class="city_hot">
 						<h2>热门城市</h2>
 						<ul class="clearfix">
-							<li>上海</li>
-							<li>北京</li>
-							<li>上海</li>
-							<li>北京</li>
-							<li>上海</li>
-							<li>北京</li>
-							<li>上海</li>
-							<li>北京</li>
+							<li v-for="city in hotCity" :key="city.id">{{city.name}}</li>
 						</ul>
 					</div>
-					<div class="city_sort">
-						<div>
-							<h2>A</h2>
+					<div class="city_sort" ref="city_sort">
+						<div v-for="cityItem in cities" :key="cityItem.id">
+							<h2>{{cityItem.index}}</h2>
 							<ul>
-								<li>阿拉善盟</li>
-								<li>鞍山</li>
-								<li>安庆</li>
-								<li>安阳</li>
+								<li v-for="citylist in cityItem.list" :key="citylist.id" @touchstart="chooseCity(citylist.name)">{{citylist.name}}</li>
 							</ul>
 						</div>
-						<div>
-							<h2>B</h2>
-							<ul>
-								<li>北京</li>
-								<li>保定</li>
-								<li>蚌埠</li>
-								<li>包头</li>
-							</ul>
-						</div>
-						<div>
-							<h2>A</h2>
-							<ul>
-								<li>阿拉善盟</li>
-								<li>鞍山</li>
-								<li>安庆</li>
-								<li>安阳</li>
-							</ul>
-						</div>
-						<div>
-							<h2>B</h2>
-							<ul>
-								<li>北京</li>
-								<li>保定</li>
-								<li>蚌埠</li>
-								<li>包头</li>
-							</ul>
-						</div>
-						<div>
-							<h2>A</h2>
-							<ul>
-								<li>阿拉善盟</li>
-								<li>鞍山</li>
-								<li>安庆</li>
-								<li>安阳</li>
-							</ul>
-						</div>
-						<div>
-							<h2>B</h2>
-							<ul>
-								<li>北京</li>
-								<li>保定</li>
-								<li>蚌埠</li>
-								<li>包头</li>
-							</ul>
-						</div>	
 					</div>
 				</div>
 				<div class="city_index">
 					<ul>
-						<li>A</li>
-						<li>B</li>
-						<li>C</li>
-						<li>D</li>
-						<li>E</li>
+						<li v-for="(letterItem ,index) in cities" :key="letterItem.index" @touchstart="scrollToIndex(index)">{{letterItem.index}}</li>
 					</ul>
 				</div>
                 </div>
 </template>
 
 <script>
+
 export default {
+	name:"City",
+	data(){
+		return{
+			hotCity:[],
+			cities:[],
+			letter:[]
+
+		}
+	},
+	created(){
+	
+	},
+	mounted(){
+		this.getCities()
+	},
+	methods:{
+		getCities(){
+			this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/cityList').then((res)=>{
+				var cities=res.data.data.cities;
+				for(var i=0;i<cities.length;i++){
+					if(cities[i].isHot==1){//热门城市
+						this.hotCity.push({name:cities[i].name,id:cities[i].id})
+					}
+					var letter=cities[i].py.substring(0,1).toUpperCase();//获取首字母大写
+					if(this.letter.indexOf(letter)==-1){
+						this.letter.push(letter)
+						this.cities.push({index:letter,list:[{id:cities[i].id,name:cities[i].name}]})
+					}else{
+						for(var j=0;j<this.cities.length;j++){
+							if(letter==this.cities[j].index){
+								this.cities[j].list.push({id:cities[i].id,name:cities[i].name})
+							}
+						}
+					}
+				}
+				this.cities.sort((n1,n2)=>{
+					if(n1.index>n2.index){
+						return 1
+					}else if(n1.index<n2.index){
+						return -1
+
+					}
+				})
+			})
+		},
+		chooseCity(){
+
+		},
+		scrollToIndex(index){
+			var h2=this.$refs.city_sort.getElementsByTagName('h2');
+			this.$refs.city_sort.parentNode.scrollTop=h2[index].offsetTop;
+
+		}
+	}
 
 }
 </script >
