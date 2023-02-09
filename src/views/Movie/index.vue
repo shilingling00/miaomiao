@@ -4,7 +4,7 @@
     <div id="content">
       <div class="movie_menu">
 				<router-link tag="div"  to="/movie/city" class="city_name">
-					<span>大连</span><i class="iconfont icon-lower-triangle"></i>
+					<span>{{$store.state.city.name}}</span><i class="iconfont icon-lower-triangle"></i>
 				</router-link>
 				<div class="hot_swtich">
 					<router-link tag="div"  to="/movie/nowPlaying" class="hot_item ">正在热映</router-link>
@@ -25,6 +25,7 @@
 <script>
 import Header from '@/components/Header'
 import Tabbar from "@/components/Tabbar"
+import {messageBox} from '@/components/Js'
 export default {
   name:"Movie",
   components:{
@@ -33,6 +34,42 @@ export default {
   },
   created(){
    
+  },
+  mounted(){
+    
+      this.getLocation()
+    
+    
+
+    
+  },
+  methods:{
+    getLocation(){
+      setTimeout(()=>{
+      this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/getLocation').then(res=>{
+        var cityInfo=res.data.data;
+        var name=cityInfo.name;
+        var id=cityInfo.id;
+        if(this.$store.state.city.id==id){
+          return
+        }
+        messageBox({
+        title:'定位',
+        content:name,
+        cancel:'取消',
+        ok:'切换定位',
+        handleCancle(){
+
+        },
+        handleOk(){
+          window.localStorage.setItem('cityName',name);
+          window.localStorage.setItem('cityId',id);
+          window.location.reload();
+        }
+      })
+      })
+    },3000)
+    }
   }
 }
 </script>

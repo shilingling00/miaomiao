@@ -1,6 +1,9 @@
 <template>
-  <div class="movie_body">
+  <div class="movie_body" ref="movie_body">
+			<Loading v-if="isLoading"></Loading>
+			<Scroller v-else :handleToScroll="handleToScroll"  :handleTounchEnd="handleTounchEnd">
 				<ul>
+					<li class="pullDown">{{ pullDownMsg }}</li>
 					<li v-for="(movieItem ,index) in movieList"  :key="index">
 						<div class="pic_show"><img :src="movieItem.img"></div>
 						<div class="info_list">
@@ -14,7 +17,8 @@
 						</div>
 					</li>
 				</ul>
-			</div>
+			</Scroller>
+	</div>
 </template>
 
 <script>
@@ -22,20 +26,69 @@ export default {
 	name:"NowPlaying",
 	data(){
 		return{
-			movieList:[]
+			movieList:[],
+			pullDownMsg:'',
+			isLoading:true,
+			prevId:-1
 		}
 	},
 	mounted(){
+	
+	},
+	activated(){
 		this.getMovieList()
-
 	},
 	methods:{
 		getMovieList(){
-			this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/movieList').then((res)=>{
-				console.log(res)
-				this.movieList=res.data.data.movieList
+			
+			var cityId=this.$store.state.city.id;
+			if(this.prevId===cityId){return;};
+			console.log(123)
+			this.isLoading=true;
+			this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/movieList?cityId='+cityId).then((res)=>{
+				this.movieList=res.data.data.movieList;
+				this.isLoading=false;
+				this.prevId=cityId;
+				// this.$nextTick(()=>{
+				// 	var scroll=new BScroll(this.$refs.movie_body,{
+				// 		tap:true,
+				// 		probeType:1
+				// 	})
+				// 	console.log(scroll)
+				// 	scroll.on('scroll',pos=>{
+				// 		console.log("scroll");
+				// 		if(pos.y>30){
+				// 			this.pullDownMsg='正在更新中'
+				// 		}
+						
+				// 	});
+				// 	scroll.on('touchEnd',(pos)=>{
+				// 		console.log('end')
+				// 		if(pos.y>30){
+				// 			this.pullDownMsg='更新成功';
+				// 			setTimeout(()=>{
+				// 				this.movieList=res.data.data.movieList;
+				// 				this.pullDownMsg='';
+				// 			},1000)
+				// 		}
+				// 	})
+				// })
 
 			})
+		},
+		handleToScroll(pos){
+			console.log(123)
+			if(pos.y>30){
+							this.pullDownMsg='正在更新中'
+						}
+		},
+		handleTounchEnd(pos){
+			if(pos.y>30){
+							this.pullDownMsg='更新成功';
+							setTimeout(()=>{
+								this.pullDownMsg='';
+							},1000)
+			}
 		}
 
 	}
@@ -56,4 +109,5 @@ export default {
 .movie_body .info_list img{ width:50px; position: absolute; right:10px; top: 5px;}
 .movie_body .btn_mall , .movie_body .btn_pre{ width:47px; height:27px; line-height: 28px; text-align: center; background-color: #f03d37; color: #fff; border-radius: 4px; font-size: 12px; cursor: pointer;}
 .movie_body .btn_pre{ background-color: #3c9fe6;}
+.movie_body .pullDown{margin: 0;padding:0;border:nonde}
 </style>
