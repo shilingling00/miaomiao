@@ -7,7 +7,7 @@ Vue.prototype.axios=axios;
 Vue.config.productionTip = false;
 
 //滑动
-import Scroller from '@/components/Scroller';
+import Scroller from './components/Scroller';
 Vue.component('Scroller',Scroller)
 //loading
 import Loading from '@/components/Loading';
