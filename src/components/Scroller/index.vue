@@ -7,7 +7,7 @@
 <script>
 import BScroll from 'better-scroll'
 export default {
-    name:'Scrolller',
+    name:'Scroller',
     props:{
         handleToScroll:{
             type:Function,
