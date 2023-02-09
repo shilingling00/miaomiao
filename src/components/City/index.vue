@@ -4,14 +4,14 @@
 					<div class="city_hot">
 						<h2>热门城市</h2>
 						<ul class="clearfix">
-							<li v-for="city in hotCity" :key="city.id">{{city.name}}</li>
+							<li v-for="city in hotCity" :key="city.id" @touchstart="chooseCity(city.name,city.id)">{{city.name}}</li>
 						</ul>
 					</div>
 					<div class="city_sort" ref="city_sort">
 						<div v-for="cityItem in cities" :key="cityItem.id">
 							<h2>{{cityItem.index}}</h2>
 							<ul>
-								<li v-for="citylist in cityItem.list" :key="citylist.id" @touchstart="chooseCity(citylist.name)">{{citylist.name}}</li>
+								<li v-for="citylist in cityItem.list" :key="citylist.id" @touchstart="chooseCity(citylist.name,citylist.id)">{{citylist.name}}</li>
 							</ul>
 						</div>
 					</div>
@@ -44,7 +44,13 @@ export default {
 	},
 	methods:{
 		getCities(){
-			this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/cityList').then((res)=>{
+			var hotCity=window.localStorage.getItem('hotCity');
+			var cities=window.localStorage.getItem('cities');
+			if(hotCity&&cities){
+				this.hotCity=JSON.parse(hotCity)
+				this.cities=JSON.parse(cities)
+			}else{
+				this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/cityList').then((res)=>{
 				var cities=res.data.data.cities;
 				for(var i=0;i<cities.length;i++){
 					if(cities[i].isHot==1){//热门城市
@@ -69,11 +75,17 @@ export default {
 						return -1
 
 					}
-				})
+				});
+				window.localStorage.setItem('hotCity',JSON.stringify(this.hotCity));
+				window.localStorage.setItem('cities',JSON.stringify(this.cities));
 			})
+			}	
 		},
-		chooseCity(){
-
+		chooseCity(name,id){
+			this.$store.commit('city/changeCity',{name,id});
+			this.$router.push('/moive/nowPlaying')
+			window.localStorage.setItem('cityName',name)
+			window.localStorage.setItem('cityId',id)
 		},
 		scrollToIndex(index){
 			var h2=this.$refs.city_sort.getElementsByTagName('h2');
