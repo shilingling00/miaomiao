@@ -44,7 +44,8 @@ export default {
 			if(this.prevId===cityId){return;};
 			console.log(123)
 			this.isLoading=true;
-			this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/movieList?cityId='+cityId).then((res)=>{
+			// this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/movieList?cityId='+cityId).then((res)=>{
+			this.axios.get('/api/movieList?cityId='+cityId).then((res)=>{
 				this.movieList=res.data.data.movieList;
 				this.isLoading=false;
 				this.prevId=cityId;

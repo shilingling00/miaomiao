@@ -32,7 +32,8 @@ export default {
 	},
 	methods:{
 		getComing(){
-			this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/comming').then((res)=>{
+			// this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/comming').then((res)=>{
+			this.axios.get('/api/comming').then((res)=>{
 				this.comingList=res.data.data.comming;
 
 			})

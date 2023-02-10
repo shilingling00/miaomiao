@@ -47,7 +47,8 @@ export default {
   methods:{
     getLocation(){
       setTimeout(()=>{
-      this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/getLocation').then(res=>{
+      // this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/getLocation').then(res=>{
+      this.axios.get('/api/getLocation').then(res=>{
         var cityInfo=res.data.data;
         var name=cityInfo.name;
         var id=cityInfo.id;

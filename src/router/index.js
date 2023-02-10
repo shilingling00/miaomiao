@@ -18,7 +18,8 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: process.env.BASE_URL,
+  base:'miaomiao',//在某个文件夹下访问 路由路径
   routes
 })
 

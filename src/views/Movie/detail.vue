@@ -61,7 +61,8 @@ export default {
 	},
     methods:{
 		getDetail(){
-			this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/detailinfo?movieId='+this.movieId).then((res)=>{
+			// this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/detailinfo?movieId='+this.movieId).then((res)=>{
+			this.axios.get('/api/detailinfo?movieId='+this.movieId).then((res)=>{
 				this.detailInfo=res.data.data.detailInfo;
 				this.isLoading=false
 				this.$nextTick(()=>{

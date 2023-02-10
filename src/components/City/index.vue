@@ -50,7 +50,8 @@ export default {
 				this.hotCity=JSON.parse(hotCity)
 				this.cities=JSON.parse(cities)
 			}else{
-				this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/cityList').then((res)=>{
+				// this.axios.get('https://www.fastmock.site/mock/771c626f9140555d1ae5a7aadca5ddb2/api/cityList').then((res)=>{
+				this.axios.get('/api/cityList').then((res)=>{
 				var cities=res.data.data.cities;
 				for(var i=0;i<cities.length;i++){
 					if(cities[i].isHot==1){//热门城市
