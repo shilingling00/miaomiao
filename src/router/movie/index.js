@@ -19,6 +19,28 @@ export default{
             component:()=>import('@/components/Search')
         },
         {
+            path:'detail/1/:movieId',
+            name:'detail1',
+            components:{
+                default:()=>import('@/components/NowPlaying'),
+                detail:()=>import('@/views/Movie/detail')
+            },
+            props:{
+                detail:true
+            }
+        },
+        {
+            path:'detail/2/:movieId',
+            name:'detail2',
+            components:{
+                default:()=>import('@/components/ComingSoon'),
+                detail:()=>import('@/views/Movie/detail')
+            },
+            props:{
+                detail:true
+            }
+        },
+        {
             path:'/movie',
             redirect:'/movie/nowPlaying'
         }

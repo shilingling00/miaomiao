@@ -5,9 +5,9 @@
 				<ul>
 					<li class="pullDown">{{ pullDownMsg }}</li>
 					<li v-for="(movieItem ,index) in movieList"  :key="index">
-						<div class="pic_show"><img :src="movieItem.img"></div>
+						<div class="pic_show" @touchstart="handleToDatail(movieItem.id)"  ><img :src="movieItem.img"></div>
 						<div class="info_list">
-							<h2>{{movieItem.name}}</h2>
+							<h2 @touchstart="handleToDatail(movieItem.id)">{{movieItem.name}}</h2>
 							<p>观众评分： <span class="grade">{{ movieItem.score }}</span></p>
 							<p>主演: {{movieItem.star}}</p>
 							<p>{{movieItem.showInfo}}</p>
@@ -39,8 +39,7 @@ export default {
 		this.getMovieList()
 	},
 	methods:{
-		getMovieList(){
-			
+		getMovieList(){	
 			var cityId=this.$store.state.city.id;
 			if(this.prevId===cityId){return;};
 			console.log(123)
@@ -89,6 +88,12 @@ export default {
 								this.pullDownMsg='';
 							},1000)
 			}
+		},
+		handleToDatail(movieId){
+			console.log(movieId)
+			this.$router.push({name:'detail1',params:{movieId:movieId}})
+			
+
 		}
 
 	}
