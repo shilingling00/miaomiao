@@ -2,16 +2,17 @@ import Vue from 'vue';
 import MessageBox from './MessageBox';
 
 export var messageBox=(function(){
-    var defaults={//默认值
-        title:'',
-        content:'',
-        cancel:'',
-        ok:'',
-        handleCancle:null,
-        handleOk:null,
-    };
-    var MyComponent=Vue.extend(MessageBox);
+    
     return function(opts){//配置参数
+        var defaults={//默认值
+            title:'',
+            content:'',
+            cancel:'',
+            ok:'',
+            handleCancle:null,
+            handleOk:null,
+        };
+        var MyComponent=Vue.extend(MessageBox);
         for(var attr in opts){
             defaults[attr]=opts[attr]
         }
@@ -26,6 +27,7 @@ export var messageBox=(function(){
             },
             methods:{
                 handleCancle(){
+                    console.log(this)
                     defaults.handleCancle&&defaults.handleCancle.call(this);
                     document.body.removeChild(vm.$el);
                 },

@@ -1,6 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  // publicPath:'/miaomiao', //项目中引入静态资源（js、css）时的基础路径
+   publicPath:'/miaomiao', //项目中引入静态资源（js、css）时的基础路径
   transpileDependencies: true,
   devServer:{
     host: 'localhost',//target host

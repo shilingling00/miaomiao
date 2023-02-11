@@ -2,24 +2,60 @@
   <div id="content">
 			<div class="login_body">
 				<div>
-					<input class="login_text" type="text" placeHolder="账户名/手机号/Email" >
+					<input  v-model="username" class="login_text" type="text" placeHolder="账户名/手机号/Email" >
 				</div>
 				<div>
-					<input class="login_text" type="password" placeHolder="请输入您的密码" >
+					<input v-model="password" class="login_text" type="password" placeHolder="请输入您的密码" >
 				</div>
-				<div class="login_btn">
+				<div class="login_btn" @touchstart="toLogin">
 					<input type="submit" value="登录">
 				</div>
 				<div class="login_link">
-					<a href="#">立即注册</a>
-					<a href="#">找回密码</a>
+					<router-link  to="/mine/register">立即注册</router-link>
+					<router-link  to="/mine/findPassword">找回密码</router-link>
 				</div>
 			</div>
 		</div>
 </template>
 
 <script>
+import {messageBox} from '@/components/Js'
 export default {
+	name:'Login',
+	data(){
+		return{
+			username:'',
+			password:''
+		}
+	},
+	methods:{
+		toLogin(){
+			this.axios.post('/api/login',{username:this.username,password:this.password}).then((res)=>{
+				var status=res.data.status;
+				if(status=='ok'){
+					var _this=this
+					messageBox({
+						title:'登录',
+						content:'登录成功',
+						ok:'确定',
+						handleOk(){
+							console.log(this)
+							_this.$router.push('center')
+						},
+					})
+
+				}else{
+					messageBox({
+						title:'登录',
+						content:'登录失败',
+						ok:'确定',
+						handleOk:null,
+					})
+				}
+			})
+		}
+
+	}
 
 }
 </script>
