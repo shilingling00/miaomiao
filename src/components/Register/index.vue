@@ -1,7 +1,7 @@
 <template>
   <div class="register_body">
     <div class="register_email">
-      邮箱：<input type="text" class="register_text" v-model="email" ><button @touchstart="toVerify">发送验证码</button>
+      邮箱：<input type="text" class="register_text" v-model="email" ><button @touchstart="toVerify" :disabled="disabled">{{verifyInfo}}</button>
     </div>
     <div>
       用户名:<input type="password"  class="register_text" v-model="username">
@@ -34,11 +34,14 @@ export default {
         username:'',
         email:'',
         password:'',
-        verify:''
+        verify:'',
+        verifyInfo:'发送验证码',
+        disabled:false
       }
     },
     methods:{
       toVerify(){
+        if(this.disabled){return;}
         this.axios.get('/api/verify?email='+this.email).then((res)=>{
           var status= res.data.status;
           var _this=this
@@ -47,6 +50,8 @@ export default {
                 title:'验证码',
                 content:'发送成功',
                 ok:'确定',
+                handleOk:this.countDown()
+                
             })
           }else{
             messageBox({
@@ -86,6 +91,22 @@ export default {
         })
 
       },
+      countDown(){
+        this.disabled=true;
+        var count=60;
+        var timer=setInterval(()=>{
+          count--;
+          this.verifyInfo='剩余'+count+'秒';
+          if(count==0){
+            this.verifyInfo="发送验证码";
+            this.disabled=false;
+            count=60;
+            clearInterval(timer)
+
+          }
+
+        },1000)
+      }
     }
 
 }

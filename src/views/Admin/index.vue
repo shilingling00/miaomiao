@@ -2,8 +2,25 @@
   <el-container>
   <el-header>喵喵网管理后台，欢迎: {{ $store.state.user.userName }}</el-header>
   <el-container>
-    <el-aside width="200px">Aside</el-aside>
-    <el-main>Main</el-main>
+    <el-aside width="200px">
+      <el-menu default-active="1">
+      <el-menu-item index="1">
+        <i class="el-icon-menu"></i>
+        <router-link to="/admin/user"  tag="span" slot="title">用户管理</router-link>
+      </el-menu-item>
+      <el-menu-item index="2">
+        <i class="el-icon-document"></i>
+        <router-link to="/admin/movie"  tag="span" slot="title">电影管理</router-link>
+      </el-menu-item>
+      <el-menu-item index="3">
+        <i class="el-icon-setting"></i>
+        <router-link to="/admin/cinema"  tag="span" slot="title">影院管理</router-link>
+      </el-menu-item>
+    </el-menu>
+    </el-aside>
+    <el-main>
+      <router-view></router-view>
+    </el-main>
   </el-container>
 </el-container>
 </template>
@@ -46,7 +63,7 @@ export default {
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
+    /* line-height: 160px; */
   }
   
   body > .el-container {
