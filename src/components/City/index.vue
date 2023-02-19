@@ -43,6 +43,7 @@ export default {
 		this.getCities()
 	},
 	methods:{
+		//获取城市
 		getCities(){
 			var hotCity=window.localStorage.getItem('hotCity');
 			var cities=window.localStorage.getItem('cities');
